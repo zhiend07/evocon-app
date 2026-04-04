@@ -1,0 +1,10 @@
+[build]
+  command = "flutter build web"
+  publish = "build/web"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://api.evocon.com/api/:splat"
+  status = 200
+  force = true
+  headers = {Access-Control-Allow-Origin = "*"}
