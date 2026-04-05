@@ -25968,7 +25968,7 @@ s=p}for(;;)switch(s){case 0:p=4
 j=B.ck.dG(b+":"+c)
 n=B.mk.gH6().dG(j)
 m=A.Gm(2,a,B.a5,!1)
-l="https://soft-sable-8f00c2.netlify.app/.netlify/functions/evocon-proxy?url="+A.l(m)+"&auth="+A.l(n)
+l="https://evocon-super-cerame.netlify.app/.netlify/functions/evocon-proxy?url="+A.l(m)+"&auth="+A.l(n)
 s=7
 return A.Q(A.aFe(A.hF(l),null),$async$fn)
 case 7:j=e

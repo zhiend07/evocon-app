@@ -6752,7 +6752,7 @@ class SynthesisPageState extends State<SynthesisPage> {
 class ApiClient {
   // ✅ CHANGEZ CETTE LIGNE
   static const String netlifyProxyUrl =
-      'https://soft-sable-8f00c2.netlify.app/.netlify/functions/evocon-proxy';
+      'https://evocon-super-cerame.netlify.app/.netlify/functions/evocon-proxy';
 
   static Future<http.Response> getWithBasicAuth(
     String apiUrl,
