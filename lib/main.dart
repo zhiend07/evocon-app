@@ -6753,7 +6753,6 @@ class ApiClient {
   // ✅ CHANGEZ CETTE LIGNE
   static const String netlifyProxyUrl =
       'https://evocon-super-cerame.netlify.app/.netlify/functions/evocon-proxy';
-
   static Future<http.Response> getWithBasicAuth(
     String apiUrl,
     String username,
