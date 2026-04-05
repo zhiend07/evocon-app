@@ -6747,26 +6747,28 @@ class SynthesisPageState extends State<SynthesisPage> {
   }
 }
 
+// ===== CLASSE PROXY NETLIFY =====
+// ===== CLASSE PROXY NETLIFY =====
 class ApiClient {
-  static const String proxyBase = '/.netlify/functions/evocon-proxy';
+  // ✅ CHANGEZ CETTE LIGNE
+  static const String netlifyProxyUrl =
+      'https://soft-sable-8f00c2.netlify.app/.netlify/functions/evocon-proxy';
 
   static Future<http.Response> getWithBasicAuth(
     String apiUrl,
     String username,
     String password,
   ) async {
-    final String basicAuth =
-        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-    final String encodedUrl = Uri.encodeComponent(apiUrl);
-    // ignore: unused_local_variable
-    final String encodedAuth = Uri.encodeComponent(basicAuth);
+    try {
+      final String basicAuth = base64Encode(utf8.encode('$username:$password'));
+      final String encodedUrl = Uri.encodeComponent(apiUrl);
+      final String proxyUrl =
+          '$netlifyProxyUrl?url=$encodedUrl&auth=$basicAuth';
 
-    final String proxyUrl =
-        '$proxyBase?url=$encodedUrl&auth=${basicAuth.replaceFirst('Basic ', '')}';
-
-    return http.get(
-      Uri.parse(proxyUrl),
-      headers: {'Content-Type': 'application/json'},
-    );
+      return await http.get(Uri.parse(proxyUrl));
+    } catch (e) {
+      developer.log('ApiClient Error: $e', name: 'ApiClient');
+      rethrow;
+    }
   }
 }

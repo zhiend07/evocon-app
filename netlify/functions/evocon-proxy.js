@@ -1,16 +1,22 @@
 exports.handler = async (event) => {
-  const apiUrl = event.queryStringParameters?.apiUrl;
+  const encodedUrl = event.queryStringParameters?.url;
   const auth = event.queryStringParameters?.auth;
 
-  if (!apiUrl || !auth) {
+  if (!encodedUrl || !auth) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'Missing apiUrl or auth parameters' }),
+      body: JSON.stringify({ error: 'Missing url or auth parameters' }),
+      headers: { 'Access-Control-Allow-Origin': '*' }
     };
   }
 
   try {
+    const apiUrl = decodeURIComponent(encodedUrl);
+    
+    console.log('Calling API:', apiUrl);
+
     const response = await fetch(apiUrl, {
+      method: 'GET',
       headers: {
         'Authorization': `Basic ${auth}`,
         'Content-Type': 'application/json',
@@ -24,7 +30,7 @@ exports.handler = async (event) => {
       body: data,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Content-Type': 'application/json',
       },
     };
@@ -33,6 +39,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
+      headers: { 'Access-Control-Allow-Origin': '*' }
     };
   }
 };
