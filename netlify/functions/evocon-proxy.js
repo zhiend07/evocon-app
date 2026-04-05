@@ -1,29 +1,35 @@
 exports.handler = async (event) => {
-  try {
-    // Récupérer les paramètres depuis l'URL
-    const params = new URLSearchParams(event.rawQuery);
-    const apiUrl = params.get('url');
-    
-    if (!apiUrl) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'URL parameter required' }),
-      };
-    }
+  const apiUrl = event.queryStringParameters?.apiUrl;
+  const auth = event.queryStringParameters?.auth;
 
-    // Faire la requête à l'API Evocon
-    const response = await fetch(decodeURIComponent(apiUrl));
-    const data = await response.json();
-
+  if (!apiUrl || !auth) {
     return {
-      statusCode: 200,
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Missing apiUrl or auth parameters' }),
+    };
+  }
+
+  try {
+    const response = await fetch(apiUrl, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Authorization': `Basic ${auth}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+    });
+
+    const data = await response.text();
+
+    return {
+      statusCode: response.status,
+      body: data,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json',
+      },
     };
   } catch (error) {
+    console.error('Proxy error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
