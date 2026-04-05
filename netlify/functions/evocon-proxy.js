@@ -2,6 +2,8 @@ exports.handler = async (event) => {
   const encodedUrl = event.queryStringParameters?.url;
   const auth = event.queryStringParameters?.auth;
 
+  console.log('📍 Proxy called with URL:', encodedUrl);
+
   if (!encodedUrl || !auth) {
     return {
       statusCode: 400,
@@ -13,7 +15,7 @@ exports.handler = async (event) => {
   try {
     const apiUrl = decodeURIComponent(encodedUrl);
     
-    console.log('Calling API:', apiUrl);
+    console.log('🔗 Calling API:', apiUrl);
 
     const response = await fetch(apiUrl, {
       method: 'GET',
@@ -35,7 +37,7 @@ exports.handler = async (event) => {
       },
     };
   } catch (error) {
-    console.error('Proxy error:', error);
+    console.error('❌ Proxy error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
